@@ -3,6 +3,8 @@ const cors = require('cors');
 const userRoute = require('./src/routes/user')
 const chatRoute = require('./src/routes/chat')
 
+require("./src/db")
+
 const PORT = process.env.PORT || 5000;
 
 

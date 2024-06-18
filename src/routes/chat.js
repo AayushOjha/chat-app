@@ -1,23 +1,26 @@
-const express = require("express")
+const express = require("express");
+const Message = require("../../models/Message");
 
 const app = express.Router();
 
-// Placeholder for message storage logic
-const messages = []; // This will later be replaced with MongoDB integration
-
-app.post('/messages', (req, res) => {
-  // TODO: Implement message storage logic
-  // For now, we'll just simulate message storage
-  const { sender, content } = req.body;
-  const newMessage = { sender, content };
-  messages.push(newMessage);
-  res.status(201).send({ message: 'Message sent successfully' });
+app.post('/messages', async (req, res) => {
+  try {
+    const { senderId, content } = req.body;
+    const newMessage = new Message({ sender: senderId, content });
+    await newMessage.save();
+    res.status(201).send({ message: 'Message sent successfully', data: newMessage });
+  } catch (error) {
+    res.status(500).send({ message: 'Error sending message', error: error.message });
+  }
 });
 
-app.get('/messages', (req, res) => {
-  // TODO: Implement message retrieval logic
-  // For now, we'll just simulate message retrieval
-  res.status(200).send(messages);
+app.get('/messages', async (req, res) => {
+  try {
+    const messages = await Message.find().populate('sender', 'username');
+    res.status(200).send(messages);
+  } catch (error) {
+    res.status(500).send({ message: 'Error retrieving messages', error: error.message });
+  }
 });
 
 module.exports = app;
