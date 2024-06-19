@@ -3,6 +3,7 @@ import ChatWindow from './components/ChatWindow';
 import MessageInput from './components/MessageInput';
 import { Container, Grid } from '@mui/material';
 import socket from './utils/socket';
+import "./App.css"
 
 const App = () => {
   const [messages, setMessages] = useState([]);
@@ -32,7 +33,8 @@ const App = () => {
   };
 
   return (
-    <Container>
+    <Container className='app-container'>
+      <h1 className='page-title' >Chat Room</h1>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <ChatWindow messages={messages} />

@@ -14,10 +14,12 @@ const MessageInput = ({ onSendMessage }) => {
 
   return (
     <Paper
+    className="input-box-paper"
       style={{ padding: "2px 4px", display: "flex", alignItems: "center" }}
     >
       <InputBase
         style={{ marginLeft: "8px", flex: 1 }}
+        className="input-box"
         placeholder="Type your message..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
