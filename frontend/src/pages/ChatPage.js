@@ -4,10 +4,27 @@ import ChatWindow from '../components/ChatWindow';
 import MessageInput from '../components/MessageInput';
 import { Container, Grid } from '@mui/material';
 import socket from '../utils/socket';
+import { useNavigate } from 'react-router-dom';
 
 
 const ChatPage = () => {
+
+  const navigate = useNavigate();
+
   const [messages, setMessages] = useState([]);
+  const [userName, setUserName] = useState('');
+  const [groupName, setGroupName] = useState('');
+
+  useEffect(() => {
+    const usename = localStorage.getItem('username')
+    const groupname = localStorage.getItem('groupname')
+    if(usename && groupname){
+      setUserName(userName)
+      setGroupName(groupname)
+    }else{
+      navigate('/')
+    }
+  }, [])
 
   useEffect(() => {
     socket.on("message", (message) => {
@@ -21,7 +38,8 @@ const ChatPage = () => {
 
   const sendMessage = (content) => {
     const messageData = {
-      senderId: "userId", // Replace with actual user ID
+      sender: userName, 
+      group: groupName,
       content: content,
     };
     socket.emit("sendMessage", messageData);
