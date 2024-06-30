@@ -4,6 +4,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const userRoute = require('./src/routes/user')
 const chatRoute = require('./src/routes/chat')
+const Message = require('./models/Message')
 
 
 require("./src/db")

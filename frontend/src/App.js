@@ -1,49 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import ChatWindow from './components/ChatWindow';
-import MessageInput from './components/MessageInput';
-import { Container, Grid } from '@mui/material';
-import socket from './utils/socket';
-import "./App.css"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ChatPage } from "./pages/ChatPage";
+import { LoginPage } from "./pages/LoginPage";
+import "./App.css";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LoginPage />,
+  },
+  {
+    path: "/home",
+    element: <div style={{ color: "red" }}>Hello world!</div>,
+  },
+  {
+    path: "/chat",
+    element: <ChatPage />,
+  },
+]);
 
 const App = () => {
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    socket.on('message', (message) => {
-      console.log(message);
-    });
-
-    return () => {
-      socket.off('message');
-    };
-  }, []);
-
-  const sendMessage = (content) => {
-    const messageData = {
-      senderId: 'userId', // Replace with actual user ID
-      content: content
-    };
-    socket.emit('sendMessage', messageData);
-  };
-
-
-  const handleSendMessage = (content) => {
-    const newMessage = { sender: 'User', content };
-    setMessages([...messages, newMessage]);
-  };
-
   return (
-    <Container className='app-container'>
-      <h1 className='page-title' >Chat Room</h1>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <ChatWindow messages={messages} />
-        </Grid>
-        <Grid item xs={12}>
-          <MessageInput onSendMessage={handleSendMessage} />
-        </Grid>
-      </Grid>
-    </Container>
+    <ThemeProvider theme={darkTheme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   );
 };
 
