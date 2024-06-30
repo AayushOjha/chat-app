@@ -25,9 +25,13 @@ io.on('connection', (socket) => {
   console.log('New client connected');
 
   socket.on('sendMessage', async (data) => {
-    const newMessage = new Message(data);
-    await newMessage.save();
-    io.emit('message', newMessage);
+    try {
+      const newMessage = new Message(data);
+      await newMessage.save();
+      io.emit('message', newMessage);
+    } catch (error) {
+      console.error(`message failed`, data)
+    }
   });
 
   socket.on('disconnect', () => {
@@ -38,9 +42,6 @@ io.on('connection', (socket) => {
 app.use(express.json());
 
 app.use(cors());
-
-app.use('/users', userRoute);
-app.use('/chat', chatRoute);
 
 
 server.listen(PORT, () => {

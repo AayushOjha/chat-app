@@ -5,8 +5,8 @@ const app = express.Router();
 
 app.post('/messages', async (req, res) => {
   try {
-    const { senderId, content } = req.body;
-    const newMessage = new Message({ sender: senderId, content });
+    const { sender, content, group } = req.body;
+    const newMessage = new Message({ sender, content, group });
     await newMessage.save();
     res.status(201).send({ message: 'Message sent successfully', data: newMessage });
   } catch (error) {
